@@ -4,8 +4,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 
+/**
+ *@author - Jhjing
+ *@since - 2020.1.21 021
+ *注解 @EnableCaching : 开启注解版的缓存功能
+ */
 @SpringBootApplication
-//开启注解版的缓存功能
 @EnableCaching
 public class SpringBootCacheApplication {
 
