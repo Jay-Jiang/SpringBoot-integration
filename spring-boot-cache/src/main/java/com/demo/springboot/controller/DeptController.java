@@ -26,8 +26,13 @@ public class DeptController {
     }
 
     @RequestMapping("/dept/{id}")
-    public Department getDepts(@PathVariable("id") Long deptId) {
+    public Department getDept(@PathVariable("id") Long deptId) {
         return deptService.getDept(deptId);
+    }
+
+    @RequestMapping("/dept/name/{deptName}")
+    public Department getDept(@PathVariable("deptName") String deptName) {
+        return deptService.getDeptByName(deptName);
     }
 
     @RequestMapping("/dept/add/{name}")

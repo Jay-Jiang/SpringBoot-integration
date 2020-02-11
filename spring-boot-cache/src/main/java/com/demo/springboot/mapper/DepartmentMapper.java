@@ -37,6 +37,9 @@ public interface DepartmentMapper {
     @Select("select id,dept_name from department where id = #{id}")
     Department selectDeptById(Long id);
 
+    @Select("select id,dept_name from department where dept_name = #{deptName}")
+    Department selectDeptByName(String deptName);
+
     // @Results(id = "deptResults", value = {@Result(property = "id", column = "uid", id = true), @Result(property = "deptName", column = "dept_name")})
     @Select("select id,dept_name from department")
     List<Department> selectAllDepts();

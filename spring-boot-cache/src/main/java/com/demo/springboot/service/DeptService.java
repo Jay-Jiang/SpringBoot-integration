@@ -3,9 +3,11 @@ package com.demo.springboot.service;
 import com.demo.springboot.entity.Department;
 import com.demo.springboot.mapper.DepartmentMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,9 +16,11 @@ import java.util.List;
 /**
  * @author - Jianghj
  * @since - 2019-12-11 15:44
+ * 测试 spring 注解缓存
  */
 @Service
 @Slf4j
+@CacheConfig(cacheNames = "deptCache")
 public class DeptService {
 
     /**
@@ -75,20 +79,21 @@ public class DeptService {
     }
 
     /**
+     * 启用缓存
      * 缓存中没有，执行方法，将返回值添加到缓存中
      * 缓存中有，不再执行方法，直接返回缓存中的值
      * 底层实现步骤：
-     *   1. 在调用目标方法之前，CacheManager 按照 cacheNames 查找对应的 Cache 实例
-     *     - 如果没有查找到，则按照给定的 cacheName 创建一个 Cache 实例，并返回它
-     *   2. 从获取到的 Cache 实例中，按照给定的 Key 查找对应的缓存数据
-     *      - 如果找到了，直接返回该缓存数据
-     *      - 如果没找到，则调用目标方法，并将方法的返回值，按照给定的 key 保存到指定 Cache 实例中
+     * 1. 在调用目标方法之前，CacheManager 按照 cacheNames 查找对应的 Cache 实例
+     * - 如果没有查找到，则按照给定的 cacheName 创建一个 Cache 实例，并返回它
+     * 2. 从获取到的 Cache 实例中，按照给定的 Key 查找对应的缓存数据
+     * - 如果找到了，直接返回该缓存数据
+     * - 如果没找到，则调用目标方法，并将方法的返回值，按照给定的 key 保存到指定 Cache 实例中
      * 核心：
-     *   1. 没有配置的情况下，默认使用 ConcurrentMapCacheManager 和 ConcurrentMapCache
-     *   2. 缓存数据 key ，没有指定时，默认使用 SimpleKeyGenerator 来生成
-     *      - 如下，使用 SpEL 表达式，来自定义 key
-     *      - 拼接字符串时，可以使用 \" 或 ' 两种形式，
-     *        - 即 key = "\"dept_\"+#id" 或者 key = "'dept_'+#id" ===> dept_2
+     * 1. 没有配置的情况下，默认使用 ConcurrentMapCacheManager 和 ConcurrentMapCache
+     * 2. 缓存数据 key ，没有指定时，默认使用 SimpleKeyGenerator 来生成
+     * - 如下，使用 SpEL 表达式，来自定义 key
+     * - 拼接字符串时，可以使用 \" 或 ' 两种形式，
+     * - 即 key = "\"dept_\"+#id" 或者 key = "'dept_'+#id" ===> dept_2
      */
     @Cacheable(cacheNames = "{deptCache}", key = "'dept_'+#id", condition = "#id % 2 == 0")
     public Department getDept(Long id) {
@@ -100,5 +105,24 @@ public class DeptService {
     public List<Department> getDepts() {
         log.info("本次通过数据库来获取 depts 信息");
         return deptMapper.selectAllDepts();
+    }
+
+    /**
+     * 复杂缓存
+     * 此注解可以同时设置多个 @Cacheable/@CachePut/@CacheEvict 缓存设置
+     * 注意：此时，因为方法上使用了 @CachePut 注解，所以一定会执行
+     * 注意：在类上使用 @CacheConfig 注解指明了使用的 Cache 实例，故此时方法上可以省略指定 cacheNames 属性
+     * @param deptName
+     */
+    @Caching(
+        cacheable = {@Cacheable(key = "#result.deptName")},
+        put = {
+            @CachePut(key = "'dept_'+#result.id"),
+            @CachePut(key="'dept_'+#result.id")
+        }
+        // , evict = {@CacheEvict()}
+    )
+    public Department getDeptByName(String deptName) {
+        return deptMapper.selectDeptByName(deptName);
     }
 }

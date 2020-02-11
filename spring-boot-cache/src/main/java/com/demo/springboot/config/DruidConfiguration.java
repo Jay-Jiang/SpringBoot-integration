@@ -49,7 +49,7 @@ public class DruidConfiguration {
     @Bean(initMethod = "init", destroyMethod = "close")
     @ConfigurationProperties(prefix = "spring.druid")
     public DataSource druidDataSource() {
-        logger.info("custom durid datasource init...");
+        logger.info("custom druid datasource init...");
         return new DruidDataSource();
     }
 
