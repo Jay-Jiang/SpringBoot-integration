@@ -20,6 +20,17 @@
     </properties>
 
     <dependencies>
+
+        <!--Spring Mail -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <!--SpringData ElasticSearch -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
         <!--AMQP 实现 RabbitMQ -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
