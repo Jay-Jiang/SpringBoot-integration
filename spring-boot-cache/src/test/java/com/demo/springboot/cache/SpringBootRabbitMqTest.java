@@ -19,7 +19,7 @@ import java.util.Map;
  */
 
 @SpringBootTest
-public class SpringBootRabbitMqTests {
+public class SpringBootRabbitMqTest {
 
     @Resource
     RabbitTemplate rabbitTemplate;

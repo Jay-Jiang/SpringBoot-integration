@@ -20,6 +20,27 @@
     </properties>
 
     <dependencies>
+
+        <!-- Zookeeper 客户端 -->
+        <dependency>
+            <groupId>com.github.sgroschupf</groupId>
+            <artifactId>zkclient</artifactId>
+            <version>0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <!-- 对 zookeeper 操作的 High Level API -->
+            <artifactId>curator-framework</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <!-- Zookeeper 操作的高级特性-->
+            <!-- 如：Cache事件监听、选举、分布式锁、分布式 Barrier -->
+            <artifactId>curator-recipes</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+
         <!--spring EndPoints Actuator-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

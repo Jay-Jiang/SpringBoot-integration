@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 
 
 @SpringBootTest
-class SpringBootCacheApplicationTests {
+class SpringBootCacheApplicationTest {
 
     @Resource
     EmployeeService employeeService;
